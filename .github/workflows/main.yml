@@ -1,0 +1,22 @@
+name: Deploy Flask app to Ubuntu server
+
+on:
+  push:
+    branches: 
+     - main
+     
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v1
+      
+    - name: Setup SSH key
+      uses: webfactory/ssh-agent@v0.5.3
+      with:
+        ssh-private-key: ${{ secrets.MY_PRIVATE_KEY }}
+        
+    - name: Check versions
+      run: |
+        ssh ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }} "sudo cat /home/ubuntu/.ssh/authorized_keys"
